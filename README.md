@@ -10,9 +10,7 @@ src/
 ├── models/         # schemas Mongoose
 ├── controllers/    # camada HTTP
 ├── services/       # regras de negócio
-├── clients/        # comunicação com APIs externas (ex: ViaCep)
 ├── routes/         # definição de endpoints
-├── middlewares/     # error handler, etc.
 ├── app.ts          # setup do Express
 └── server.ts        # bootstrap (conecta ao banco e sobe o servidor)
 ```
@@ -38,6 +36,17 @@ npm run dev     # desenvolvimento com hot-reload
 npm run build   # compila TS -> dist/
 npm start       # roda a versão compilada (dist/server.js)
 ```
+
+## Testes
+
+Requer Mongo e Redis rodando (`docker compose up -d mongo redis`).
+
+```bash
+npm test         # roda a suíte uma vez
+npm run test:watch  # modo watch
+```
+
+Testes em `tests/`, cenários BDD documentados em `docs/bdd-test-plan.md`.
 
 ## Endpoints
 
