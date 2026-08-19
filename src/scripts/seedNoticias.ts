@@ -1,13 +1,13 @@
-import { connectDatabase } from '../config/database';
-import { NewsRepository } from '../models/NewsRepository';
+import { conectarBancoDados } from '../config/db';
+import { NoticiasRepository } from '../models/Noticias';
 import mongoose from 'mongoose';
 
-const TOPICS = [
+const TOPICOS = [
   'Economia', 'Tecnologia', 'Esportes', 'Política', 'Saúde',
   'Educação', 'Meio Ambiente', 'Cultura', 'Ciência', 'Entretenimento',
 ];
 
-const HEADLINES = [
+const MANCHETES = [
   'Governo anuncia novas medidas',
   'Startup levanta rodada de investimento',
   'Time vence campeonato após final emocionante',
@@ -20,34 +20,34 @@ const HEADLINES = [
   'Especialistas debatem cenário atual',
 ];
 
-function randomItem<T>(arr: T[]): T {
+function itemAleatorio<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)] as T;
 }
 
 async function seed() {
-  await connectDatabase();
-  const newsRepository = new NewsRepository();
+  await conectarBancoDados();
+  const noticiasRepository = new NoticiasRepository();
 
   const total = 30;
-  const created = [];
+  const criadas = [];
 
   for (let i = 1; i <= total; i++) {
-    const topic = randomItem(TOPICS);
-    const headline = randomItem(HEADLINES);
+    const topico = itemAleatorio(TOPICOS);
+    const manchete = itemAleatorio(MANCHETES);
 
-    const news = await newsRepository.create({
-      title: `${headline} #${i} - ${topic}`,
-      description: `Notícia fake gerada automaticamente sobre ${topic.toLowerCase()}. Este é o conteúdo de exemplo número ${i} usado para popular o banco de testes.`,
+    const noticia = await noticiasRepository.criar({
+      titulo: `${manchete} #${i} - ${topico}`,
+      descricao: `Notícia fake gerada automaticamente sobre ${topico.toLowerCase()}. Este é o conteúdo de exemplo número ${i} usado para popular o banco de testes.`,
     });
 
-    created.push(news);
+    criadas.push(noticia);
   }
 
-  console.log(`${created.length} news criadas com sucesso.`);
+  console.log(`${criadas.length} notícias criadas com sucesso.`);
   await mongoose.disconnect();
 }
 
 seed().catch((err) => {
-  console.error('Erro ao popular news:', err);
+  console.error('Erro ao popular notícias:', err);
   process.exit(1);
 });

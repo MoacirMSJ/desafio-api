@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import newsRoutes from './newsRoutes';
+import noticiasRoutes from './noticias';
 
 const router = Router();
 
-router.use('/news', newsRoutes);
+router.use('/noticias', noticiasRoutes);
 
 export default router;
