@@ -1,6 +1,7 @@
 import { INew } from '../models/New';
 import { INewsRepository } from '../models/INewsRepository';
 import { INewsService } from './INewsService';
+import { PaginatedResult, PaginationParams } from '../types/pagination';
 
 export class NewsService implements INewsService {
   constructor(private readonly newsRepository: INewsRepository) {}
@@ -9,8 +10,8 @@ export class NewsService implements INewsService {
     return this.newsRepository.create(data);
   }
 
-  async findAll(): Promise<INew[]> {
-    return this.newsRepository.findAll();
+  async findAll(pagination: PaginationParams): Promise<PaginatedResult<INew>> {
+    return this.newsRepository.findAll(pagination);
   }
 
   async findByTitle(title: string): Promise<INew[]> {

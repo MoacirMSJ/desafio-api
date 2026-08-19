@@ -17,7 +17,10 @@ export class NewsController implements INewsController {
 
   async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const news = await this.newsService.findAll();
+      const page = Math.max(1, Number.parseInt(String(req.query.page ?? '1'), 10) || 1);
+      const limit = Math.max(1, Number.parseInt(String(req.query.limit ?? '10'), 10) || 10);
+
+      const news = await this.newsService.findAll({ page, limit });
       res.json(news);
     } catch (err) {
       next(err);
