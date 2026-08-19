@@ -1,12 +1,12 @@
-export interface PaginationParams {
-  page: number;
-  limit: number;
+export interface ParametrosPaginacao {
+  pagina: number;
+  limite: number;
 }
 
-export interface PaginatedResult<T> {
-  data: T[];
-  page: number;
-  limit: number;
+export interface ResultadoPaginado<T> {
+  dados: T[];
+  pagina: number;
+  limite: number;
   total: number;
-  totalPages: number;
+  totalPaginas: number;
 }
