@@ -1,28 +1,27 @@
-import { QueryFilter } from 'mongoose';
-import { New, INew } from '../models/New';
+import { INew } from '../models/New';
+import { INewsRepository } from '../models/INewsRepository';
+import { INewsService } from './INewsService';
 
-export class NewsService {
+export class NewsService implements INewsService {
+  constructor(private readonly newsRepository: INewsRepository) {}
+
   async create(data: Pick<INew, 'title' | 'description'>): Promise<INew> {
-    return New.create(data);
+    return this.newsRepository.create(data);
   }
 
   async findAll(): Promise<INew[]> {
-    return New.find({ deleted_at: null });
+    return this.newsRepository.findAll();
   }
 
-  async findByParam(filter: QueryFilter<INew>): Promise<INew[]> {
-    return New.find({ ...filter, deleted_at: null });
+  async findByTitle(title: string): Promise<INew[]> {
+    return this.newsRepository.findByFilter({ title });
   }
 
   async update(id: string, data: Partial<Pick<INew, 'title' | 'description'>>): Promise<INew | null> {
-    return New.findOneAndUpdate({ _id: id, deleted_at: null }, data, { new: true });
+    return this.newsRepository.updateById(id, data);
   }
 
   async delete(id: string): Promise<INew | null> {
-    return New.findOneAndUpdate(
-      { _id: id, deleted_at: null },
-      { deleted_at: new Date() },
-      { new: true }
-    );
+    return this.newsRepository.softDeleteById(id);
   }
 }
